@@ -1,7 +1,7 @@
 # Turing Basics
 20170214
 
-### Fieldwidths
+## Fieldwidths
 
 - Numbers are **right-justified**
 - Strings are **left-justified**
@@ -11,13 +11,13 @@ Examples:
   - `put "234" : 5` outputs `234··`
   - `put 234 : 5` outputs `··234`
 
-### Round
+## Round
 
 Examples
 
   - `put 234.237 : 0 : 2` outputs `234.24`
 
-### Operations
+## Operations
 
 **BEDMAS Rule**
 
@@ -32,7 +32,7 @@ Types:
 
 *Default: 6 decimal places*
 
-### Continuous outputs
+## Continuous outputs
 
 - Every `put` statement adds an `ENTER` at the end.
 - Add `..` to the end to stay at the same line.
