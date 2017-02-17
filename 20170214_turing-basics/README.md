@@ -6,14 +6,14 @@
 - Numbers are **right-justified**
 - Strings are **left-justified**
 
-Examples:
+Example:
 
   - `put "234" : 5` outputs `234··`
   - `put 234 : 5` outputs `··234`
 
 ## Round
 
-Examples
+Example:
 
   - `put 234.237 : 0 : 2` outputs `234.24`
 

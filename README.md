@@ -10,4 +10,4 @@ This repository should contain all my works and programs.
 ## Contents
 
 - [20170214 - Turing Basics](20170214_turing-basics)
-- [20170215 - Turing Output](20170215_turing-output)
+- [20170215/16 - Turing Output](20170215_turing-output)
