@@ -5,8 +5,8 @@
 
 ### To change the color of text
 
-- `color (color-name)` or
-- `color (color-number)`
+- `color (colorName)` or
+- `color (colorNumber)`
 
 Example:
 
@@ -17,27 +17,29 @@ Example:
 
 #### Change only one line ####
 
-- `colorback (color-name)` or
-- `colorback (color-number)`
+- `colorback (colorName)` or
+- `colorback (colorNumber)`
 
 #### Change the whole background ####
 
 ```turing
-colorback (color)   % Set background color
+colorback (Color)   % Set background color
 cls                 % Clear screen
 ```
 
 ### To create your own color
 
 ```turing
-RGB.SetColor (color-number, r, g, b)
-color (color-number)
+RGB.SetColor (colorNumber, r, g, b)
+color (colorNumber)
 ```
 
-- `color-number`: to assign a color number to your own color
-- `r`: percentage of red in *decimal (0 to 1)*
-- `g`: percentage of green in *decimal (0 to 1)*
-- `b`: percentage of blue in *decimal (0 to 1)*
+| Parameters | Meaning |
+| ---------- | ------- |
+| `colorNumber` | assign a color number to your own color
+| `r` | percentage of red in *decimal (0 to 1)*
+| `g` | percentage of green in *decimal (0 to 1)*
+| `b` | percentage of blue in *decimal (0 to 1)*
 
 ## Locate
 
