@@ -15,4 +15,4 @@ Notes are in *README.md* in corresponding folders
 - [20170216 - Extra Output Exercises](20170216_extra-output-exercises)
 - [20170222 - Screen](20170222_screen)
 - [20170222 - Graphics and Fonts Exercises](20170222_graphics-and-fonts-exercises)
-- [20170223 - More Graphics Exercises](20170223_more-graphics-exercises)
+- [20170223/24 - More Graphics Exercises](20170223_more-graphics-exercises)
