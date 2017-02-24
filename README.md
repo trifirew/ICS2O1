@@ -11,3 +11,6 @@ Keisun's repository for
 - [20170214 - Turing Basics](20170214_turing-basics)
 - [20170215/16 - Turing Output](20170215_turing-output)
 - [20170216 - Extra Output Exercises](20170216_extra-output-exercises)
+- [20170222 - Screen](20170222_screen)
+- [20170222 - Graphics and Fonts Exercises](20170222_graphics-and-fonts-exercises)
+- [20170223 - More Graphics Exercises](20170223_more-graphics-exercises)
