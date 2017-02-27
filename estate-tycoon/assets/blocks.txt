@@ -1,0 +1,36 @@
+0 START
+1 Barrie
+2 Sudbury
+3 CHANCE
+4 Calgary Int'l Airport
+5 Richmond
+6 TAX
+7 Regina
+8 Windsor
+9 JAIL
+10 Kitchener
+11 FATE
+12 York Region
+13 Montreal Int'l Airport
+14 CHANCE
+15 London
+16 Halifax
+17 Quebec City
+18 INTEREST
+19 Hamilton
+20 Brampton
+21 CHANCE
+22 Vancouver Int'l Airport
+23 Vancouver
+24 Winnipeg
+25 FATE
+26 Mississauga
+27 ARREST
+28 Edmonton
+29 Ottawa
+30 CHANCE
+31 Toronto Int'l Airport
+32 Calgary
+33 FATE
+34 Montreal
+35 Toronto
