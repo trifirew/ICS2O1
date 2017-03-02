@@ -11,7 +11,7 @@ Notes are in [Wiki](../../wiki).
 ## Codes
 
 - [20170214 - Turing Basics](20170214_turing-basics)
-- [20170215/16 - Turing Output](20170215_turing-output)
+- [20170215/16 - Turing Output Exercises](20170215_turing-output-exercises)
 - [20170216 - Extra Output Exercises](20170216_extra-output-exercises)
 - [20170222 - Graphics and Fonts Exercises](20170222_graphics-and-fonts-exercises)
 - [20170223/24 - More Graphics Exercises](20170223_more-graphics-exercises)
