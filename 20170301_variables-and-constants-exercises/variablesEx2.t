@@ -8,6 +8,7 @@ put "What is your year of birth?"
 get birth
 put "What year is it now?"
 get currentYear
+
 age := currentYear - birth
 put skip
 put "You are now ", age, " year(s) old."
