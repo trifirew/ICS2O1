@@ -21,7 +21,6 @@ area := width1 * length1
 peri := 2 * (width1 + length1)
 
 cls
-
 locatexy (x1 + width1 div 2, y2+15)
 put width1
 locatexy (x1 - 30, y1 + length1 div 2)
@@ -30,5 +29,4 @@ locatexy(x1 + width1 div 2 - 35, y1 + length1 div 2+10)
 put "Area = ", area:0:1
 locatexy(x1 + width1 div 2 - 50, y1 + length1 div 2-10)
 put "Perimeter = ", peri:0:1
-
 drawbox (x1, y1, x2, y2, black)
