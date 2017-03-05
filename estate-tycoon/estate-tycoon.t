@@ -4,13 +4,13 @@
 
 import GUI
 
-var gameMenu : int
-var menuItem : array 1 .. 1 of int
-var menuItemLabel : array 1 .. 1 of string :=
-    init ("Quit")
+var imgBanner, imgStartS, imgStartL, imgExitS, imgExitL : int   % All image assets
+var picBanner, picStart, picExit : int                          % All GUI widgets
+var mouseX, mouseY, mouseBtn : int                              % Related with mouse events
 
-View.Set ("graphics:801;601,position:center;middle,nobuttonbar")
-
+% Set window mode
+View.Set ("graphics:800;600,position:center;middle,nobuttonbar")
+View.Set ("title:Estate Tycoon")
 
 class Block
     % Class of in-game blocks
@@ -60,9 +60,6 @@ class Player
     end stayInJail
 end Player
 
-% Create menus
-gameMenu := GUI.CreateMenu ("Game")
-menuItem(1) := GUI.CreateMenuItem(menuItemLabel(1), GUI.Quit)
 
 % Initialize the blocks
 var blocks : array 0 .. 35 of pointer to Block
@@ -75,19 +72,18 @@ for i : 0 .. 35
     get : blocksInfo, name : *
     new Block, blocks (i)
     blocks (i) -> setBlock (i, name)
-    put blocks (i) -> id, " ", blocks (i) -> name
 end for
 
 % Initialize the players
 var players : array 1 .. 4 of pointer to Player
-for i : 1 .. 4    
-get name : *
+for i : 1 .. 4
+    get name : *
     new Player, players (i)
     players (i) -> initPlayer (name)
 end for
 
 
-proc main
+proc game
     for i : 1 .. upper (players)
 	if players (i) -> arrested = 0 then
 	    put "It's ", players (i) -> name, " 's turn."
@@ -96,8 +92,40 @@ proc main
 	    players (i) -> stayInJail
 	end if
     end for
-end main
+end game
 
-main
-main
-main
+% Main menu
+proc mainMenu
+    imgBanner := Pic.FileNew ("assets/banner.jpg")
+    imgStartS := Pic.FileNew ("assets/start_s.jpg")
+    imgStartL := Pic.FileNew ("assets/start_l.jpg")
+    imgExitS := Pic.FileNew ("assets/exit_s.jpg")
+    imgExitL := Pic.FileNew ("assets/exit_l.jpg")
+    picBanner := GUI.CreatePicture (0, 400, imgBanner, false)
+    picStart := GUI.CreatePicture (300, 275, imgStartS, false)
+    picExit := GUI.CreatePicture (300, 225, imgExitS, false)
+    loop
+	Mouse.Where (mouseX, mouseY, mouseBtn)
+	if mouseX > 300 and mouseX < 500 and mouseY > 275 and mouseY < 325 then
+	    picStart := GUI.CreatePicture (300, 275, imgStartL, false)
+	    picExit := GUI.CreatePicture (300, 225, imgExitS, false)
+	    if mouseBtn not= 0 then
+		game
+		exit
+	    end if
+	elsif mouseX > 300 and mouseX < 500 and mouseY > 225 and mouseY < 275 then
+	    picStart := GUI.CreatePicture (300, 275, imgStartS, false)
+	    picExit := GUI.CreatePicture (300, 225, imgExitL, false)
+	    if mouseBtn not= 0 then
+		cls
+		GUI.Quit
+		exit
+	    end if
+	else
+	    picStart := GUI.CreatePicture (300, 275, imgStartS, false)
+	    picExit := GUI.CreatePicture (300, 225, imgExitS, false)
+	end if
+    end loop
+end mainMenu
+
+mainMenu
