@@ -3,24 +3,17 @@
 % Inspired by: Monopoly Board Game
 
 import GUI
-
-var imgBanner, imgStartS, imgStartL, imgExitS, imgExitL : int   % All image assets
-var picBanner, picStart, picExit : int                          % All GUI widgets
-var mouseX, mouseY, mouseBtn : int                              % Related with mouse events
-
 % Set window mode
 View.Set ("graphics:800;600,position:center;middle,nobuttonbar")
 View.Set ("title:Estate Tycoon")
 
+
 class Block
     % Class of in-game blocks
-    export id, name, setBlock
-
-    var id : int := 0
+    export name, setBlock
     var name : string := ""
 
-    proc setBlock (setID : int, setName : string)
-	id := setID
+    proc setBlock (setName : string)
 	name := setName
     end setBlock
 end Block
@@ -60,28 +53,19 @@ class Player
     end stayInJail
 end Player
 
-
-% Initialize the blocks
+% Not game-related variables
+var mouseX, mouseY, mouseBtn : int                              % Related with mouse events
+var imgBanner, imgStartS, imgStartL, imgExitS, imgExitL : int   % All image assets
+var picBanner, picStart, picExit, labelNewGame : int                          % All GUI widgets
+var cboxPlayer, txtfieldPlayer : array 1 .. 4 of int
+% Game-related variables
 var blocks : array 0 .. 35 of pointer to Block
-var blocksInfo : int
-var id : int
-var name : string
-open : blocksInfo, "assets/blocks.txt", get
-for i : 0 .. 35
-    get : blocksInfo, id
-    get : blocksInfo, name : *
-    new Block, blocks (i)
-    blocks (i) -> setBlock (i, name)
-end for
-
-% Initialize the players
 var players : array 1 .. 4 of pointer to Player
-for i : 1 .. 4
-    get name : *
-    new Player, players (i)
-    players (i) -> initPlayer (name)
-end for
-
+var defPlayerName : array 1 .. 4 of string :=
+    init ("Player 1 (You)",
+    "Player 2 (CPU)",
+    "Player 3 (CPU)",
+    "Player 4 (CPU)")
 
 proc game
     for i : 1 .. upper (players)
@@ -94,7 +78,45 @@ proc game
     end for
 end game
 
-% Main menu
+proc cboxStatus (status : boolean)
+    for i : 3 .. 4
+	if GUI.GetEventWidgetID = cboxPlayer (i) then
+	    if status then
+		GUI.Enable (txtfieldPlayer (i))
+		GUI.SetText (txtfieldPlayer (i), defPlayerName (i))
+	    else
+		GUI.SetText (txtfieldPlayer (i), "")
+		GUI.Disable (txtfieldPlayer (i))
+	    end if
+	end if
+    end for
+end cboxStatus
+proc txtfieldStatus (text : string)
+end txtfieldStatus
+% Start a new game UI
+proc newGame
+    cls
+    for i : 1 .. 4
+	cboxPlayer (i) := GUI.CreateCheckBox (300, 350 - i * 50, defPlayerName (i), cboxStatus)
+	txtfieldPlayer (i) := GUI.CreateTextField (400, 350 - i * 50, 100, "", txtfieldStatus)
+    end for
+    GUI.SetCheckBox (cboxPlayer (1), true)
+    GUI.Enable (txtfieldPlayer (1))
+    GUI.Disable (cboxPlayer (1))
+    GUI.Disable (cboxPlayer (2))
+    GUI.SetCheckBox (cboxPlayer (2), true)
+    GUI.SetText (txtfieldPlayer (2), defPlayerName (2))
+    GUI.Enable (txtfieldPlayer (2))
+    GUI.Enable (cboxPlayer (3))
+    GUI.Disable (txtfieldPlayer (3))
+    GUI.Enable (cboxPlayer (4))
+    GUI.Disable (txtfieldPlayer (3))
+    loop
+	exit when GUI.ProcessEvent
+    end loop
+end newGame
+
+% Main menu UI
 proc mainMenu
     imgBanner := Pic.FileNew ("assets/banner.jpg")
     imgStartS := Pic.FileNew ("assets/start_s.jpg")
@@ -110,7 +132,7 @@ proc mainMenu
 	    picStart := GUI.CreatePicture (300, 275, imgStartL, false)
 	    picExit := GUI.CreatePicture (300, 225, imgExitS, false)
 	    if mouseBtn not= 0 then
-		game
+		newGame
 		exit
 	    end if
 	elsif mouseX > 300 and mouseX < 500 and mouseY > 225 and mouseY < 275 then
@@ -127,5 +149,25 @@ proc mainMenu
 	end if
     end loop
 end mainMenu
+
+
+% Initialize the blocks
+var blocksInfo : int
+var id : int
+var name : string
+open : blocksInfo, "assets/blocks.txt", get
+for i : 0 .. 35
+    get : blocksInfo, id
+    get : blocksInfo, name : *
+    new Block, blocks (i)
+    blocks (i) -> setBlock (name)
+end for
+% Initialize the players
+for i : 1 .. 4
+    get name : *
+    new Player, players (i)
+    players (i) -> initPlayer (name)
+end for
+
 
 mainMenu
