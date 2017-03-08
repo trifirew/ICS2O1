@@ -16,3 +16,4 @@ Notes are in [Wiki](../../wiki).
 - [20170222 - Graphics and Fonts Exercises](20170222_graphics-and-fonts-exercises)
 - [20170223/24 - More Graphics Exercises](20170223_more-graphics-exercises)
 - [20170301/02 - Variables and Constants Exercises](20170301_variables-and-constants-exercises)
+- [20170307 - Selection Programming Exercises](20170307_selection-programming-exercises)
