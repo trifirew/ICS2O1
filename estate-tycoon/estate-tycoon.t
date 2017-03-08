@@ -110,10 +110,12 @@ proc newGame
     GUI.Enable (cboxPlayer (3))
     GUI.Disable (txtfieldPlayer (3))
     GUI.Enable (cboxPlayer (4))
-    GUI.Disable (txtfieldPlayer (3))
-    loop
-	exit when GUI.ProcessEvent
-    end loop
+    GUI.Disable (txtfieldPlayer (4))
+    % loop
+    %     Mouse.Where (mouseX, mouseY, mouseBtn)
+    %     locate (1, 1)
+    %     put mouseX : 5, mouseY : 5
+    % end loop
 end newGame
 
 % Main menu UI
@@ -171,3 +173,6 @@ end for
 
 
 mainMenu
+loop
+    exit when GUI.ProcessEvent
+end loop
