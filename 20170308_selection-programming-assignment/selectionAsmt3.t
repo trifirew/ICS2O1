@@ -5,10 +5,13 @@
 var length1, length2, length3 : real
 put "Input the first length: " ..
 get length1
+assert length1 > 0
 put "Input the second length: " ..
 get length2
+assert length2 > 0
 put "Input the third length: " ..
 get length3
+assert length3 > 0
 if length1 + length2 > length3 and
    length1 + length3 > length2 and
    length2 + length3 > length1 then
