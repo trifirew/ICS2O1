@@ -36,3 +36,10 @@
 | 2.2.10 | [Factorials.java](Factorials.java) |
 | 2.2.11 | [Triangular.java](Triangular.java) |
 | 2.2.12 | [Fibonacci.java](Fibonacci.java) |
+| 2.2.13 | [PrintWord1.java](PrintWord1.java) |
+| 2.2.14 | [PrintWord2.java](PrintWord2.java) |
+| 2.2.15 | [PrintWord3.java](PrintWord3.java) |
+| 2.2.16 | [PrintWord4.java](PrintWord4.java) |
+| 2.2.17 | [PrintWord5.java](PrintWord5.java) |
+| 2.2.18 | [DiagonalLine1.java](DiagonalLine1.java) |
+| 2.2.19 | [DiagonalLine2.java](DiagonalLine2.java) |
