@@ -21,6 +21,7 @@
 | 2.1.15 | [RoundOff.java](RoundOff.java) |
 
 ## 2.2 Introducing Repetition
+
 | Question | Filename |
 | :------------- | :------------- |
 | 2.2.1 | [OneToTen.java](OneToTen.java) |
@@ -28,3 +29,10 @@
 | 2.2.3 | [OneToThirty.java](OneToThirty.java) |
 | 2.2.4 | [TableFToC.java](TableFToC.java) |
 | 2.2.5 | [TableCToF.java](TableCToF.java) |
+| 2.2.6 | [NumberSum.java](NumberSum.java) |
+| 2.2.7 | [NumberAvg.java](NumberAvg.java) |
+| 2.2.8 | [NumberMax.java](NumberMax.java) |
+| 2.2.9 | [NumberMin.java](NumberMin.java) |
+| 2.2.10 | [Factorials.java](Factorials.java) |
+| 2.2.11 | [Triangular.java](Triangular.java) |
+| 2.2.12 | [Fibonacci.java](Fibonacci.java) |
