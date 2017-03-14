@@ -8,7 +8,7 @@ ECHO Valid directories in this directory:
 DIR /AD /B /D
 ECHO.
 SET /p directory="Choose one of the directories above: "
-cd %directory%
+CD *%directory%*
 
 :r
 CLS
@@ -33,6 +33,7 @@ JAVA %class%
 ECHO.
 ECHO --------------------------------------------------------------------------------
 ECHO END OF EXECUTION
+DEL %class%.class
 ECHO - Press A -- run Again
 ECHO - Press F -- run another File
 ECHO - Press C -- Change directory
