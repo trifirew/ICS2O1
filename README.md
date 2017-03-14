@@ -8,7 +8,11 @@ Keisun's repository for
 
 Notes are in [Wiki](../../wiki).
 
-## Codes
+## Java Codes
+
+**[JAVA CODES ARE HERE](JAVA)**
+
+## Turing Codes
 
 - [20170214 - Turing Basics](20170214_turing-basics)
 - [20170215/16 - Turing Output Exercises](20170215_turing-output-exercises)
