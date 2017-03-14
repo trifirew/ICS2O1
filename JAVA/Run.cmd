@@ -1,40 +1,47 @@
 @ECHO OFF
-set MYDIR=%cd%
-:c
-cd %MYDIR%
-cls
+SET MYDIR=%cd%
+
+:choosedir
+CD %MYDIR%
+CLS
 ECHO Valid directories in this directory:
-dir /AD /B /D
-echo.
-set /p directory="Choose one of the directories above: "
-cd %directory%
-:r
-cls
-echo Now in %cd%
+DIR /AD /B /D
 ECHO.
-set newestJava=
+SET /p directory="Choose one of the directories above: "
+cd %directory%
+
+:r
+CLS
+ECHO Now in %cd%
+ECHO.
+SET newestJava=
 FOR /F "delims=|" %%I IN ('DIR "*.java" /B /O:D') DO SET newestJava=%%~nI
-echo The newest Java file is %newestJava%.java
-echo.
-echo Other Java files in this directory:
+ECHO The newest Java file is %newestJava%.java
+ECHO.
+ECHO Other Java files in this directory:
 DIR *.java /B /D
 ECHO.
-set class=%newestJava%
-set /p class="Enter Java file name without extension: "
-echo Trying to compile %class%.java
-echo --------------------------------------------------------------------------------
-echo.
-javac %class%.java
-java %class%
-echo.
-echo --------------------------------------------------------------------------------
-echo END OF EXECUTION
-echo - Press R to run another file
-echo - Press Q to quit
-echo - Press C to change directory
-choice /C rqc /N
-IF %errorlevel%==1 GOTO r
-IF %errorlevel%==2 GOTO q
-IF %errorlevel%==3 GOTO c
-:q
+SET class=%newestJava%
+SET /p class="Enter Java file name without extension: "
+:compile
+CLS
+ECHO Trying to compile %class%.java
+ECHO --------------------------------------------------------------------------------
+ECHO.
+JAVAC %class%.java
+JAVA %class%
+ECHO.
+ECHO --------------------------------------------------------------------------------
+ECHO END OF EXECUTION
+ECHO - Press A -- run Again
+ECHO - Press F -- run another File
+ECHO - Press C -- Change directory
+ECHO - Press Q -- Quit
+CHOICE /C afqc /N
+IF %errorlevel%==1 GOTO compile
+IF %errorlevel%==2 GOTO r
+IF %errorlevel%==3 GOTO quit
+IF %errorlevel%==4 GOTO choosedir
+
+:quit
 EXIT
