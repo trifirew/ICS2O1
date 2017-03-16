@@ -16,11 +16,11 @@ ECHO Now in %cd%
 ECHO.
 SET newestJava=
 FOR /F "delims=|" %%I IN ('DIR "*.java" /B /O:D') DO SET newestJava=%%~nI
-ECHO The newest Java file is %newestJava%.java
 ECHO.
-ECHO Other Java files in this directory:
+ECHO All Java files in this directory:
 DIR *.java /B /D
 ECHO.
+ECHO The newest Java file is %newestJava%.java
 SET class=%newestJava%
 SET /p class="Enter Java file name without extension: "
 :compile
