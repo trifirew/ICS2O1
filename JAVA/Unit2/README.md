@@ -45,6 +45,7 @@
 | 2.2.19 | [DiagonalLine2.java](DiagonalLine2.java) |
 
 ## 2.3 Introducing Selection
+
 | Question | Filename |
 | :------------- | :------------- |
 | 2.3.1 | [MarkPass.java](MarkPass.java) |
@@ -54,3 +55,28 @@
 | 2.3.5 | [QuadEquation.java](QuadEquation.java) |
 | 2.3.6 | [FirstNameTeam.java](FirstNameTeam.java) |
 | 2.3.7 | [WordLength.java](WordLength.java) |
+
+## 2.4 Combining Selection and Repetition
+
+| Question | Filename |
+| :------------- | :------------- |
+| 2.4.1 | [RandomReal.java](RandomReal.java) |
+| 2.4.2 | [RandomInt.java](RandomInt.java) |
+| 2.4.3 | [PairsOfDice.java](PairsOfDice.java) |
+| 2.4.4 | [GuessNum1.java](GuessNum1.java) |
+| 2.4.5 | [GuessNum2.java](GuessNum2.java) |
+| ↓ | Not done |
+| 2.4.6 | [TwentyOne.java](TwentyOne.java) |
+| 2.4.7 | [Nim.java](Nim.java) |
+| 2.4.8 | [Divisor.java](Divisor.java) |
+| 2.4.9 | [GreatestCommonDivisor.java](GreatestCommonDivisor.java) |
+| 2.4.10 | [ReduceFraction.java](ReduceFraction.java) |
+| 2.4.11 | [PrimeOrComposite.java](PrimeOrComposite.java) |
+| 2.4.12 | [LoginPassword.java](LoginPassword.java) |
+| 2.4.13 | [Palindrome.java](Palindrome.java) |
+| 2.4.14 | [VowelConsonants.java](VowelConsonants.java) |
+| 2.4.15 | [IntToSpokenRight.java](IntToSpokenRight.java) |
+| 2.4.16 | [IntToSpokenLeft.java](IntToSpokenLeft.java) |
+| 2.4.17 | [SetOfFiveCards.java](SetOfFiveCards.java) |
+| 2.4.18 | [Sentence.java](Sentence.java) |
+| 2.4.19 | [StandardDeviation.java](StandardDeviation.java) |
