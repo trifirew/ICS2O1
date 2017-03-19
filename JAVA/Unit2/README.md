@@ -65,10 +65,10 @@
 | 2.4.3 | [PairsOfDice.java](PairsOfDice.java) |
 | 2.4.4 | [GuessNum1.java](GuessNum1.java) |
 | 2.4.5 | [GuessNum2.java](GuessNum2.java) |
-| ↓ | Not done |
 | 2.4.6 | [TwentyOne.java](TwentyOne.java) |
 | 2.4.7 | [Nim.java](Nim.java) |
 | 2.4.8 | [Divisor.java](Divisor.java) |
+| ↓ | Not done |
 | 2.4.9 | [GreatestCommonDivisor.java](GreatestCommonDivisor.java) |
 | 2.4.10 | [ReduceFraction.java](ReduceFraction.java) |
 | 2.4.11 | [PrimeOrComposite.java](PrimeOrComposite.java) |
