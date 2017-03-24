@@ -1,18 +1,21 @@
-% Keisun Wu
-% 20170321
-% 6. Guess a random number between 1 and 10
-%    After each guess, tell the user whether the guess was too high or too low
+/* Keisun Wu
+ * 20170321
+ * 6. Guess a random number between 1 and 10
+ *    After each guess, tell the user whether the guess was too high or too low
+ */
 
 var num, guess : int
 randint (num, 1, 10)
 
+put "Guess a number between 1 and 10: " ..
 loop
-    put "Guess a number between 1 and 10: " ..
     get guess
-    if guess > num then
-	put "TOO HIGH"
+    if guess < 1 or guess > 10 then
+	put "Invalid number, enter again: " ..
+    elsif guess > num then
+	put "Too high! Guess again: " ..
     elsif guess < num then
-	put "TOO LOW"
+	put "Too low! Guess again: " ..
     else
 	exit
     end if
