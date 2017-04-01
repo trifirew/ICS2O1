@@ -1,6 +1,6 @@
 /* Keisun Wu
-   20170321
-   8. Count the number of names entered by user until user enters capital word "END"
+ * 20170321
+ * 8. Count the number of names entered by user until user enters capital word "END"
  */
 
 var name : string
