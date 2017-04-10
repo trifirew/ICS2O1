@@ -7,6 +7,7 @@ const TAX : real := 0.07
 var name, response : string
 var meal, bill : real
 
+% Ask Y/N questions
 proc prompt
     loop
 	get response : *
@@ -17,7 +18,6 @@ proc prompt
 end prompt
 
 put "Welcome to my awesome restaurant!"
-
 loop
     bill := 0
     put "\nWhat is your name? " ..
@@ -42,5 +42,4 @@ loop
     prompt
     exit when response = "n"
 end loop
-
 put "\nThank you for eating at my awesome restaurant."
