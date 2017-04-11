@@ -1,12 +1,16 @@
 /* Keisun Wu
- * 20170407
+ * 20170411
  * School play bill generator
  */
+
+setscreen ("text") 
 
 var billAll, billChildren, billStudents, billAdults, billSeniors : real
 var age : int
 var name, response : string
 var countAll, countChildren, countStudents, countAdults, countSeniors : int
+var revenue : real
+var attend : int
 
 % Ask Y/N questions
 proc prompt
@@ -19,6 +23,8 @@ proc prompt
 end prompt
 
 put "Welcome to the school play!"
+revenue := 0
+attend := 0
 
 loop
     put "\nThis is a new group."
@@ -59,8 +65,13 @@ loop
     put countAdults, " adults: $", billAdults : 0 : 2
     put countSeniors, " seniors: $", billSeniors : 0 : 2
     put "TOTAL: ", countAll, " people, $", billAll : 0 : 2
+    revenue += billAll
+    attend += countAll
     put "\nDo you want to start a new group(Y/N)? " ..
     prompt
     exit when response = "n"
 end loop
+
+put "\nTOTAL ATTEND PEOPLE COUNT: ", attend
+put "TOTAL REVENUE: ", revenue
 put "\nBye!"
