@@ -1,6 +1,20 @@
 /* Keisun Wu
  * 20170420
  * String Patterns Manipulating Assignment
+ *
+ * ALL PATTERNS ARE CASE-INSENSITIVE
+ *
+ * 1. Count Example
+ * count ("banana", "a") -> 3
+ * count ("keiiisun", "ii") -> 1
+ *
+ * 2. Eliminate Example
+ * eliminate ("banana", "a") -> "bnn"
+ * eliminate ("keiiisun", "ii") -> "keisun"
+ *
+ * 3. Substitute Example
+ * substitute ("banana", "a", "f") -> "bfnfnf"
+ * substitute ("banana", "an", "DFG") -> "bDFGDFGa"
  */
 
 var choice : string (1)
@@ -21,10 +35,13 @@ fcn count (word : string, pattern : string) : int
     %     end if
     % end for
     loop
+	% pattIndex : index of the pattern in shortened string
+	% word (i .. *) : from current position to the end of string
 	pattIndex := index (Str.Lower (word (i .. *)), Str.Lower (pattern))
 	exit when pattIndex = 0
 	pattCount += 1
-	i += pattIndex
+	% Skip the checked pattern, go after the pattern and loop back
+	i += pattIndex + length (pattern) - 1
     end loop
     result pattCount
 end count
@@ -35,11 +52,16 @@ fcn eliminate (word : string, pattern : string) : string
     var pattIndex : int
     var i : int := 1
     loop
+	% pattIndex : index of the pattern in shortened string
+	% word (i .. *) : from current position to the end of string
 	pattIndex := index (Str.Lower (word (i .. *)), Str.Lower (pattern))
 	exit when pattIndex = 0
+	% Add the part before the pattern of the shortened string into newWord
 	newWord += word (i .. *) (1 .. pattIndex - 1)
+	% Skip the checked pattern, go after the pattern and loop back
 	i += pattIndex + length (pattern) - 1
     end loop
+    % Add the part after the last pattern
     newWord += word (i .. *)
     result newWord
     % newWord := ""
@@ -51,15 +73,21 @@ fcn eliminate (word : string, pattern : string) : string
     % put newWord
 end eliminate
 
-fcn findReplace (word : string, pattern : string, replace : string) : string
+fcn substitute (word : string, pattern : string, replace : string) : string
     % Find a pattern (case-insensitive) in a string and replace it
     var newWord := ""
     var pattIndex : int
-    var i : int := 1
+    var i : int := 1    % Current checking position
     loop
+	% pattIndex : index of the pattern in shortened string
+	% word (i .. *) : from current position to the end of string
 	pattIndex := index (Str.Lower (word (i .. *)), Str.Lower (pattern))
 	exit when pattIndex = 0
+	% Add the part before the pattern of the shortened string 
+	% and the replace string into newWord
 	newWord += word (i .. *) (1 .. pattIndex - 1) + replace
+	% newWord += word (i .. i + pattIndex - 2) + replace
+	% Skip the checked pattern, go after the pattern and loop back
 	i += pattIndex + length (pattern) - 1
     end loop
     newWord += word (i .. *)
@@ -72,7 +100,7 @@ fcn findReplace (word : string, pattern : string, replace : string) : string
     %     end if
     % end for
     % put newWord
-end findReplace
+end substitute
 
 
 loop
@@ -103,10 +131,9 @@ loop
 	label "3" :
 	    put "Enter a replacement pattern: " ..
 	    get replace : *
-	    put "New word: ", findReplace (word, pattern, replace)
+	    put "New word: ", substitute (word, pattern, replace)
     end case
     put "\nPress any key to continue... " ..
     var ch : char := getchar
 end loop
 cls
-put "Program terminated"
