@@ -1,20 +1,9 @@
 /* Keisun Wu
- * 20170420
+ * 20170424
  * String Patterns Manipulating Assignment
- *
- * ALL PATTERNS ARE CASE-INSENSITIVE
- *
- * 1. Count Example
- * count ("banana", "a") -> 3
- * count ("keiiisun", "ii") -> 1
- *
- * 2. Eliminate Example
- * eliminate ("banana", "a") -> "bnn"
- * eliminate ("keiiisun", "ii") -> "keisun"
- *
- * 3. Substitute Example
- * substitute ("banana", "a", "f") -> "bfnfnf"
- * substitute ("banana", "an", "DFG") -> "bDFGDFGa"
+ * Ask user for a string and a pattern then count/eliminate/replace the pattern
+ * 
+ * Patterns are case-insensitive and can be multiple letters
  */
 
 var choice : string (1)
@@ -25,15 +14,10 @@ var menu : array 1 .. 4 of string :=
 
 
 fcn count (word : string, pattern : string) : int
-    % Count the occurence of a pattern (case-insensitive) in a string
+    % Count the occurence of a pattern in a string
     var pattCount : int := 0
     var pattIndex : int
     var i : int := 1
-    % for i : 0 .. length (word) - length (pattern)
-    %     if word (i + 1 .. i + length (pattern)) = pattern then
-    %         patternCount += 1
-    %     end if
-    % end for
     loop
 	% pattIndex : index of the pattern in shortened string
 	% word (i .. *) : from current position to the end of string
@@ -64,13 +48,6 @@ fcn eliminate (word : string, pattern : string) : string
     % Add the part after the last pattern
     newWord += word (i .. *)
     result newWord
-    % newWord := ""
-    % for i : 1 .. length (word)
-    %     if Str.Lower (word (i)) not= Str.Lower (pattern) then
-    %         newWord += word (i)
-    %     end if
-    % end for
-    % put newWord
 end eliminate
 
 fcn substitute (word : string, pattern : string, replace : string) : string
@@ -86,20 +63,11 @@ fcn substitute (word : string, pattern : string, replace : string) : string
 	% Add the part before the pattern of the shortened string 
 	% and the replace string into newWord
 	newWord += word (i .. *) (1 .. pattIndex - 1) + replace
-	% newWord += word (i .. i + pattIndex - 2) + replace
 	% Skip the checked pattern, go after the pattern and loop back
 	i += pattIndex + length (pattern) - 1
     end loop
     newWord += word (i .. *)
     result newWord
-    % for i : 1 .. length (word)
-    %     if Str.Lower (word (i)) not= Str.Lower (pattern) then
-    %         newWord += word (i)
-    %     else
-    %         newWord += replace
-    %     end if
-    % end for
-    % put newWord
 end substitute
 
 
@@ -110,6 +78,7 @@ loop
 	put menu (item)
     end for
     put skip
+    % Make sure user press 1 - 4
     loop
 	put "Choose one option: " ..
 	getch (choice)
@@ -134,6 +103,7 @@ loop
 	    put "New word: ", substitute (word, pattern, replace)
     end case
     put "\nPress any key to continue... " ..
+    % Let user press any key once
     var ch : char := getchar
 end loop
 cls
