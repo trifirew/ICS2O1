@@ -17,25 +17,6 @@ var picDroid : int := Pic.FileNew ("android.gif")
 var picApple : int := Pic.FileNew ("apple.gif")
 
 
-% process Ball
-%     var x : int := maxx div 2
-%     var y : int := maxy div 2
-%     var radius : int := 50
-%     var direction : int := -5
-%     loop
-%         drawfilloval (x, y, radius, radius, red)
-%         % View.Update
-%         View.UpdateArea (x - radius, y - radius - move, x+ radius, y + radius + move)
-%         delay (20)
-%         cls
-%         if y - radius <= 0 or y + radius >= maxy then
-%             direction *= -1
-%         end if
-%         y += direction
-%     end loop
-% end Ball
-
-
 process apple
     loop
 	appleDirHori := Rand.Int (0, 2)
@@ -44,7 +25,19 @@ process apple
     end loop
 end apple
 
+process sfx
+    loop
+	if abs (appleX - droidX) < 20 and abs (appleY - droidY) < 20 then
+	    Music.Sound (500, 50)
+	else
+	    Music.SoundOff
+	end if
+    end loop
+end sfx
+
 fork apple
+fork sfx
+Music.PlayFileLoop ("fade.mp3")
 loop
     Input.KeyDown (keys)
     if keys (KEY_UP_ARROW) and droidY + 180 < maxy then
@@ -59,34 +52,33 @@ loop
     end if
 
     % Computer control
-    % if appleDirVert = 1 and appleY + 180 < maxy then
-    %     appleY += appleMove
-    % elsif appleDirVert = 2 and appleY > 0 then
-    %     appleY -= appleMove
-    % end if
-    % if appleDirHori = 1 and appleX > 0 then
-    %     appleX -= appleMove
-    % elsif appleDirHori = 2 and appleX + 180 < maxx then
-    %     appleX += appleMove
-    % end if
-
-    % Second user control
-    if keys ('w') and appleY + 180 < maxy then
+    if appleDirVert = 1 and appleY + 180 < maxy then
 	appleY += appleMove
-    elsif keys ('s') and appleY > 0 then
+    elsif appleDirVert = 2 and appleY > 0 then
 	appleY -= appleMove
     end if
-    if keys ('a') and appleX > 0 then
+    if appleDirHori = 1 and appleX > 0 then
 	appleX -= appleMove
-    elsif keys ('d') and appleX + 180 < maxx then
+    elsif appleDirHori = 2 and appleX + 180 < maxx then
 	appleX += appleMove
     end if
+
+    % Second user control
+    % if keys ('w') and appleY + 180 < maxy then
+    %     appleY += appleMove
+    % elsif keys ('s') and appleY > 0 then
+    %     appleY -= appleMove
+    % end if
+    % if keys ('a') and appleX > 0 then
+    %     appleX -= appleMove
+    % elsif keys ('d') and appleX + 180 < maxx then
+    %     appleX += appleMove
+    % end if
 
     Pic.Draw (picApple, appleX, appleY, picMerge)
     Pic.Draw (picDroid, droidX, droidY, picMerge)
 
     View.Update
-    % View.UpdateArea (x -move, y - move, x + 180 +move, y +180+ move)
     delay (5)
     cls
 end loop
