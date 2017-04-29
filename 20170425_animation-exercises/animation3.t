@@ -3,11 +3,12 @@
  * 3. Move Android with arrow key
  */
 
-View.Set ("graphics:800;800,offscreenonly")
+var picDroid : int := Pic.FileNew ("android.gif")
+var picApple : int := Pic.FileNew ("apple.gif")
 var keys : array char of boolean
 var stop : boolean := false
-var droidX : int := maxx - 180
-var droidY : int := maxy - 180
+var droidX : int := maxx - 100
+var droidY : int := maxy - 100
 var droidMove : int := 4
 var appleHuman : boolean := false
 var appleX : int := 0
@@ -15,9 +16,8 @@ var appleY : int := 0
 var appleMove : int := 3
 var appleDirHori : int := 1
 var appleDirVert : int := 1
-var picDroid : int := Pic.FileNew ("android.gif")
-var picApple : int := Pic.FileNew ("apple.gif")
 var count : int := 0
+View.Set ("graphics:max;max,offscreenonly")
 
 
 fcn collide (offset : int) : boolean
@@ -55,14 +55,14 @@ Music.PlayFileLoop ("neo.mp3")
 loop
     Input.KeyDown (keys)
     % Control moves of Android using ARROW KEYS
-    if keys (KEY_UP_ARROW) and droidY + 180 < maxy then
+    if keys (KEY_UP_ARROW) and droidY + 100 < maxy then
 	droidY += droidMove
     elsif keys (KEY_DOWN_ARROW) and droidY > 0 then
 	droidY -= droidMove
     end if
     if keys (KEY_LEFT_ARROW) and droidX > 0 then
 	droidX -= droidMove
-    elsif keys (KEY_RIGHT_ARROW) and droidX + 180 < maxx then
+    elsif keys (KEY_RIGHT_ARROW) and droidX + 100 < maxx then
 	droidX += droidMove
     end if
     % Set Apple mode (Computer/Human)
@@ -79,26 +79,26 @@ loop
 
     if appleHuman then
 	% Second user control moves of Apple using WASD
-	if keys ('w') and appleY + 180 < maxy then
+	if keys ('w') and appleY + 100 < maxy then
 	    appleY += appleMove
 	elsif keys ('s') and appleY > 0 then
 	    appleY -= appleMove
 	end if
 	if keys ('a') and appleX > 0 then
 	    appleX -= appleMove
-	elsif keys ('d') and appleX + 180 < maxx then
+	elsif keys ('d') and appleX + 100 < maxx then
 	    appleX += appleMove
 	end if
     else
 	% Computer control moves of Apple
-	if appleDirVert = 1 and appleY + 180 < maxy then
+	if appleDirVert = 1 and appleY + 100 < maxy then
 	    appleY += appleMove
 	elsif appleDirVert = 2 and appleY > 0 then
 	    appleY -= appleMove
 	end if
 	if appleDirHori = 1 and appleX > 0 then
 	    appleX -= appleMove
-	elsif appleDirHori = 2 and appleX + 180 < maxx then
+	elsif appleDirHori = 2 and appleX + 100 < maxx then
 	    appleX += appleMove
 	end if
     end if
