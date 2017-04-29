@@ -5,6 +5,7 @@
 
 var picDroid : int := Pic.FileNew ("android.gif")
 var picApple : int := Pic.FileNew ("apple.gif")
+var picSize : int := 100
 var keys : array char of boolean
 var stop : boolean := false
 var droidX : int := maxx - 100
@@ -55,14 +56,14 @@ Music.PlayFileLoop ("neo.mp3")
 loop
     Input.KeyDown (keys)
     % Control moves of Android using ARROW KEYS
-    if keys (KEY_UP_ARROW) and droidY + 100 < maxy then
+    if keys (KEY_UP_ARROW) and droidY + picSize < maxy then
 	droidY += droidMove
     elsif keys (KEY_DOWN_ARROW) and droidY > 0 then
 	droidY -= droidMove
     end if
     if keys (KEY_LEFT_ARROW) and droidX > 0 then
 	droidX -= droidMove
-    elsif keys (KEY_RIGHT_ARROW) and droidX + 100 < maxx then
+    elsif keys (KEY_RIGHT_ARROW) and droidX + picSize < maxx then
 	droidX += droidMove
     end if
     % Set Apple mode (Computer/Human)
@@ -79,26 +80,26 @@ loop
 
     if appleHuman then
 	% Second user control moves of Apple using WASD
-	if keys ('w') and appleY + 100 < maxy then
+	if keys ('w') and appleY + picSize < maxy then
 	    appleY += appleMove
 	elsif keys ('s') and appleY > 0 then
 	    appleY -= appleMove
 	end if
 	if keys ('a') and appleX > 0 then
 	    appleX -= appleMove
-	elsif keys ('d') and appleX + 100 < maxx then
+	elsif keys ('d') and appleX + picSize < maxx then
 	    appleX += appleMove
 	end if
     else
 	% Computer control moves of Apple
-	if appleDirVert = 1 and appleY + 100 < maxy then
+	if appleDirVert = 1 and appleY + picSize < maxy then
 	    appleY += appleMove
 	elsif appleDirVert = 2 and appleY > 0 then
 	    appleY -= appleMove
 	end if
 	if appleDirHori = 1 and appleX > 0 then
 	    appleX -= appleMove
-	elsif appleDirHori = 2 and appleX + 100 < maxx then
+	elsif appleDirHori = 2 and appleX + picSize < maxx then
 	    appleX += appleMove
 	end if
     end if
