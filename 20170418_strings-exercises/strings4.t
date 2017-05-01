@@ -1,3 +1,8 @@
+/* Keisun Wu
+ * 20170418
+ * 4. Get the middle letter of a word.
+ */
+
 var word : string
 loop
     put "Enter a word: " ..

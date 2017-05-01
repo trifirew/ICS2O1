@@ -1,3 +1,8 @@
+/* Keisun Wu
+ * 20170418
+ * 5. Turn a string into an inverted triangle.
+ */
+
 var word, newWord : string
 put "Enter a word: " ..
 get word : *

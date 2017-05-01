@@ -1,3 +1,8 @@
+/* Keisun Wu
+ * 20170418
+ * 2. Get the first and the last letter of a word.
+ */
+
 var word : string
 put "Enter a series of words. (End with the word 'wow')"
 loop

@@ -1,3 +1,8 @@
+/* Keisun Wu
+ * 20170418
+ * 3. Reverse a word, and determine if it is a palindrome.
+ */
+
 var word, reversed : string
 loop
     put "Enter a word: " ..
