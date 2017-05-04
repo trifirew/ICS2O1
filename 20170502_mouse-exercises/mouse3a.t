@@ -1,10 +1,10 @@
 View.Set ("offscreenonly")
 var x, y, b, bn, bud : int
-type rectangle :
+type Rectangle :
     record
 	x1, y1, x2, y2, c : int
     end record
-var boxes : flexible array 1 .. 0 of rectangle
+var boxes : flexible array 1 .. 0 of Rectangle
 
 fcn u : int
     % Shortcut for the last item index in an array
@@ -12,8 +12,8 @@ fcn u : int
 end u
 
 proc drawPrevious (upperEnd : int)
-    % Re-draw previous drawn rectangles
-    var box : rectangle
+    % Re-draw previous drawn Rectangles
+    var box : Rectangle
     for i : 1 .. upperEnd
 	box := boxes (i)
 	drawfillbox (box.x1, box.y1, box.x2, box.y2, box.c)
