@@ -1,9 +1,9 @@
 /* Keisun Wu
- * 20170508
+ * 20170513
  * Hangman Game Assignment
  */
 
-import GUI
+import GUI, Anim in "Anim.tu", G in "G.tu"
 
 % Word variables
 var word : string
@@ -33,8 +33,9 @@ var words : array 0 .. * of string := init (
 var countRight, countWrong : int
 % Font variables
 var fontLetter : int := Font.New ("mono:22:bold")
+var fontSans : int := Font.New ("sans serif:16")
 % Picture variables
-var picHang : int
+var picHang, picTitle : int
 var picMan : array 1 .. 10 of int
 % GUI variables
 var btnGuessLetter, btnGuessWord, btnNewGame, btnExit : int
@@ -74,16 +75,6 @@ end correctLetter
 procedure drawMan
     Pic.Draw (picMan (guessCount), 630, 120, picCopy)
 end drawMan
-
-procedure openingScreen
-    % Initialize pictures
-    picHang := Pic.Scale (Pic.FileNew ("hang.gif"), 360, 360)
-    for i : 1 .. upper (picMan)
-	picMan (i) := Pic.Scale (Pic.FileNew ("man" + intstr (i) + ".gif"), 133, 240)
-    end for
-    % Show opening screen
-
-end openingScreen
 
 procedure visibleBtnLetters (state : boolean)
     View.Set ("offscreenonly")
@@ -161,7 +152,6 @@ procedure inputLetter
 	end if
 	GUI.Refresh
     elsif guessMode = "word" and letterPosition < length (word) then
-	% guessed += pressedLetter
 	letterPosition += 1
 	% Skip space character
 	if word (letterPosition) = " " then
@@ -188,7 +178,7 @@ procedure inputLetter
     genWord
 end inputLetter
 
-procedure drawBtnLetters (
+procedure initBtnLetters (
 	xtl : int, ytl : int,
 	width : int, gap : int, column : int
 	)
@@ -199,6 +189,7 @@ procedure drawBtnLetters (
     % width : width of each button
     % gap : horizontal gap between each button
     % column : number of buttons in a row
+    View.Set ("offscreenonly")
     for i : 0 .. 25
 	btnLetters (i) := GUI.CreateButton (
 	    xtl + i mod column * (width + 10),
@@ -209,7 +200,8 @@ procedure drawBtnLetters (
 	    )
     end for
     visibleBtnLetters (false)
-end drawBtnLetters
+    View.Set ("nooffscreenonly")
+end initBtnLetters
 
 procedure guessLetter
     guessMode := "letter"
@@ -230,6 +222,50 @@ procedure newGame
     countWrong := 0
 end newGame
 
+procedure exitGame
+    GUI.Quit
+end exitGame
+
+procedure openingScreen
+    % Initialize pictures
+    picHang := Pic.Scale (Pic.FileNew ("hang.gif"), 360, 360)
+    for i : 1 .. upper (picMan)
+	picMan (i) := Pic.Scale (Pic.FileNew ("man" + intstr (i) + ".gif"), 133, 240)
+    end for
+    picTitle := Pic.FileNew ("title.gif")
+    % Show opening screen
+    View.Set ("offscreenonly")
+    Pic.Draw (picTitle, 0, 0, picCopy)
+    Anim.Slide (Anim.LEFT + Anim.RIGHT, 2, 5)
+    loop
+	G.textVerticalCentre ("Click anywhere to start", 100, fontSans, black)
+	for i : 95 .. 120
+	    View.UpdateArea (250, i, 550, i + 1)
+	    delay (20)
+	end for
+	exit when Mouse.ButtonMoved ("down")
+	delay (500)
+	drawfillbox (250, 90, 550, 120, white)
+	for i : 95 .. 120
+	    View.UpdateArea (250, i, 550, i + 1)
+	    delay (20)
+	end for
+	exit when Mouse.ButtonMoved ("down")
+    end loop
+    colorback (darkgrey)
+    cls
+    Anim.Slide (Anim.LEFT + Anim.RIGHT, 2, 5)
+    colorback (white)
+    cls
+    btnGuessLetter := GUI.CreateButton (0, 0, 200, "Guess a letter", guessLetter)
+    btnGuessWord := GUI.CreateButton (200, 0, 200, "Guess a word", guessTheWord)
+    btnNewGame := GUI.CreateButton (400, 0, 200, "Give up - New game", newGame)
+    btnExit := GUI.CreateButton (600, 0, 200, "Exit game", exitGame)
+    delay (300)
+    Anim.Slide (Anim.HORI_CENTRE, 2, 5)
+    View.Set ("nooffscreenonly")
+end openingScreen
+
 View.Set ("graphics:800;480")
 
 % Opening screen
@@ -237,12 +273,8 @@ openingScreen
 
 
 newGame
+initBtnLetters (50, 200, 40, 10, 6)
 
-drawBtnLetters (50, 200, 40, 10, 6)
-btnGuessLetter := GUI.CreateButton (0, 0, 200, "Guess a letter", guessLetter)
-btnGuessWord := GUI.CreateButton (200, 0, 200, "Guess a word", guessTheWord)
-btnNewGame := GUI.CreateButton (400, 0, 200, "Give up - New game", newGame)
-btnExit := GUI.CreateButton (600, 0, 200, "Exit game", GUI.Quit)
 % Generate a word
 genWord
 
