@@ -6,7 +6,7 @@
 
 unit
 module G
-    export textVerticalCentre
+    export textVerticalCentre, F
     
     proc textVerticalCentre (text : string, y : int, font : int, c : int)
 	% Draw text at the vertical centre of the screen
@@ -17,4 +17,8 @@ module G
 	var textWidth : int := Font.Width (text, font) % Get width of text in pixels
 	Font.Draw (text, (maxx - textWidth) div 2, y, font, c)
     end textVerticalCentre
+    
+    fcn F (fontFamily : string, fontSize : int) : int
+	result Font.New (fontFamily + ":" + intstr (fontSize))
+    end F
 end G
