@@ -1,5 +1,5 @@
 /* Keisun Wu
- * 20170513
+ * 20170519
  * Anim module
  * Animation effects
  */
@@ -16,6 +16,12 @@ module Anim
     const HORI_CENTRE : int := 20
     const VERT_CENTRE : int := 21
 
+    % Animation of uncovering an area
+    % x1, y1 : bottom-left corner
+    % x2, y2 : top-right corner
+    % startSide : starting side of the animation
+    % px : pixels each move
+    % dl : delay between each move
     proc UncoverArea (x1 : int, y1 : int, x2 : int, y2 : int, startSide : int, px : int, dl : int)
 	case startSide of
 	    label LEFT :
@@ -64,13 +70,21 @@ module Anim
 	end case
     end UncoverArea
 
+    % Animation of uncovering the whole screen
+    % startSide : starting side of the animation
+    % px : pixels each move
+    % dl : delay between each move
     proc Uncover (startSide : int, px : int, dl : int)
 	UncoverArea (0, 0, maxx, maxy, startSide, px, dl)
     end Uncover
-    
+
+    % Animation of covering the whole screen with a color
+    % c : color
+    % startSide : starting side of the animation
+    % px : pixels each move
+    % dl : delay between each move
     proc Cover (c : int, startSide : int, px : int, dl : int)
-	colorback (c)
-	cls
+	drawfillbox (0, 0, maxx, maxy, c)
 	Uncover (startSide, px, dl)
     end Cover
 end Anim

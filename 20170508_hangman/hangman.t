@@ -1,39 +1,41 @@
 /* Keisun Wu
- * 20170513
+ * 20170519
  * Hangman Game Assignment
+ * Both keyboard and mouse control are allowed
+ * Bonus: Highest score
+ *        Animation for win/lose
+ *        Display word category
+ *        More Animation
  */
 
-import GUI, Anim in "Anim.tu", G in "G.tu"
+import GUI, Anim in "Anim.tu", G in "G.tu", WordBank in "WordBank.tu"
+% Anim: Animation module
+% G: Graphics module
+% WordBank: All words
 
 % Word variables
-var word : string
-var guessed : flexible array 1 .. 0 of string
+var word : string   % Random word generated to be guessed by player
+var hint : string   % Hint(Category) of the word
+var guessed : flexible array 1 .. 0 of string   % Player's guess
 var guessMode : string := ""    % Either "letter" or "word"
 var guessCount : int    % Counter of player's attempts, associate with the drawing of man
-var letterPosition : int    % Used in "guess the word" mode, the index of word the player is entering 
-var words : array 0 .. * of string := init (
-    "apple",
-    "banana",
-    "cat",
-    "dog",
-    "email",
-    "frog",
-    "golf",
-    "home",
-    "information",
-    "jazz",
-    "king",
-    "China",
-    "Donald Trump",
-    "Canada",
-    "United States"
-    )
+var letterPosition : int    % Used in "guess the word" mode, the index of word the player is entering
+var words := WordBank.words
 % Score counting variables
 var countRight, countWrong : int
 % Player variables
-var playerName : string
+type Player :
+    record
+	name : string
+	right : int
+	wrong : int
+    end record
+var player : Player := init ("Anonymous", 0, 0) % Current player
+var highestPlayer : Player := init ("Anonymous", 0, 0)
 % Font variables
 var fontLetter : int := Font.New ("mono:22:bold")
+var fontMono28 : int := Font.New ("mono:28")
+var fontSans40 : int := Font.New ("sans serif:40")
 var fontSans36 : int := Font.New ("sans serif:36")
 var fontSans24 : int := Font.New ("sans serif:24")
 var fontSans16 : int := Font.New ("sans serif:16")
@@ -43,10 +45,10 @@ var picHang, picTitle : int
 var picMan : array 1 .. 10 of int
 % GUI variables
 var btnGuessLetter, btnGuessWord, btnNewGame, btnExit : int
-var btnLetters : array 0 .. 25 of int
+var btnLetters : array 0 .. 25 of int   % 26 buttons for the letters
 
+% Get the clicked letter
 fcn pressedLetter : string
-    % Get the clicked letter
     for i : 0 .. 25
 	if GUI.GetEventWidgetID = btnLetters (i) then
 	    result chr (i + 97)
@@ -54,6 +56,7 @@ fcn pressedLetter : string
     end for
 end pressedLetter
 
+% Check if the whole word is correct
 fcn correctWord : boolean
     for i : 1 .. length (word)
 	if Str.Lower (word (i)) not= Str.Lower (guessed (i)) then
@@ -63,11 +66,11 @@ fcn correctWord : boolean
     result true
 end correctWord
 
+% Check if the letter exist in the word
 fcn correctLetter : boolean
     var correct : boolean := false
     for i : 1 .. length (word)
 	if pressedLetter = Str.Lower (word (i)) then
-	    % guessed += word (i)
 	    correct := true
 	    guessed (i) := word (i)
 	    Font.Draw (word (i), 22 + i * 25, 300, fontLetter, black)
@@ -76,10 +79,12 @@ fcn correctLetter : boolean
     result correct
 end correctLetter
 
+% Draw the picture of the hangman
 procedure drawMan
     Pic.Draw (picMan (guessCount), 639, 150, picCopy)
 end drawMan
 
+% Set letter buttons visibility
 procedure visibleBtnLetters (state : boolean)
     View.Set ("offscreenonly")
     for i : 0 .. 25
@@ -93,6 +98,7 @@ procedure visibleBtnLetters (state : boolean)
     View.Set ("nooffscreenonly")
 end visibleBtnLetters
 
+% Set letter buttons enable or not
 procedure enableBtnLetters (state : boolean)
     for i : 0 .. 25
 	if state then
@@ -103,21 +109,24 @@ procedure enableBtnLetters (state : boolean)
     end for
 end enableBtnLetters
 
+% Show player's score at the top of the screen
 procedure showScore
-    % View.Set ("offscreenonly")
     drawfillbox (0, 440, maxx, 480, grey)
-    Font.Draw (playerName, 20, 454, fontSans12, black)
-    G.textVerticalCentre ("Right: " + intstr (countRight), 464, fontSans12, green)
-    G.textVerticalCentre ("Wrong: " + intstr (countWrong), 444, fontSans12, red)
-    % Anim.UncoverArea (0, 440, maxx, 480, Anim.LEFT, 2, 5)
-    % View.Set ("nooffscreenonly")
+    Font.Draw (player.name, 20, 454, fontSans12, black)
+    G.TextVerticalCentre ("Right: " + intstr (player.right), 464, fontSans12, green)
+    G.TextVerticalCentre ("Wrong: " + intstr (player.wrong), 444, fontSans12, red)
+    G.TextAlignRight ("Score: " + intstr (player.right - player.wrong), 20, 454, fontSans12, black)
 end showScore
 
+% Start a new guess
+% Draw related components
 procedure startGuess
     View.Set ("offscreenonly")
     letterPosition := 0
     cls
+    % Draw segments of line according to the length of the word
     for i : 1 .. length (word)
+	% Skip space character
 	if word (i) not= " " then
 	    drawfillbox (20 + i * 25, 298, 20 + i * 25 + 20, 300, grey)
 	    guessed (i) := ""
@@ -125,6 +134,7 @@ procedure startGuess
 	    guessed (i) := " "
 	end if
     end for
+    Font.Draw ("Category: " + hint, 45, 350, fontSans16, black)
     Pic.Draw (picHang, 450, 60, picMerge)
     % If player switch mode during guessing, redraw the image of hangman
     if guessCount not= 0 then
@@ -146,22 +156,51 @@ procedure startGuess
     end if
     showScore
     enableBtnLetters (true)
+    Input.Flush
     GUI.Refresh
-    % Anim.UncoverArea (0, 0, 400, maxy, Anim.LEFT, 2, 5)
-    % Anim.UncoverArea (400, 0, maxx, maxy, Anim.BOTTOM, 2, 5)
     View.Set ("nooffscreenonly")
 end startGuess
 
+% Generate a new word
 procedure genWord
-    word := words (Rand.Int (0, upper (words)))
+    var wordIndex : int := Rand.Int (0, upper (words))
+    word := words (wordIndex).word
+    hint := words (wordIndex).hint
     guessCount := 0
     guessMode := ""
     new guessed, length (word)
     startGuess
 end genWord
 
+% After player win/lose, show the word and score
+procedure outputResult
+    delay (1000)
+    View.Set ("offscreenonly")
+    if correctWord then
+	player.right += 1
+	drawfillbox (0, 0, maxx, maxy, green)
+	G.TextVerticalCentre ("You got it right!", 280, fontSans24, yellow)
+    elsif guessCount >= 10 then
+	player.wrong += 1
+	drawfillbox (0, 0, maxx, maxy, red)
+	G.TextVerticalCentre ("You got it wrong...", 280, fontSans24, yellow)
+    end if
+    G.TextVerticalCentre (word, 222, fontSans36, white)
+    G.TextVerticalCentre ("Score: " + intstr (player.right - player.wrong), 150, fontSans24, yellow)
+    G.TextVerticalCentre ("Right: " + intstr (player.right), 110, fontSans16, grey)
+    G.TextVerticalCentre ("Wrong: " + intstr (player.wrong), 80, fontSans16, grey)
+    Anim.Uncover (Anim.TOP, 2, 5)
+    delay (1000)
+    Anim.Cover (white, Anim.TOP, 2, 5)
+    showScore
+    visibleBtnLetters (false)
+    genWord
+    View.Set ("nooffscreenonly")
+end outputResult
+
+% Called hen user clicked a letter
+% Input the letter
 procedure inputLetter
-    % When user clicked a letter
     if guessMode = "letter" then
 	GUI.Disable (GUI.GetEventWidgetID)
 	GUI.SetColor (GUI.GetEventWidgetID, white)
@@ -172,6 +211,7 @@ procedure inputLetter
 	end if
 	GUI.Refresh
     elsif guessMode = "word" and letterPosition < length (word) then
+	% Input the letter on the lines
 	letterPosition += 1
 	% Skip space character
 	if word (letterPosition) = " " then
@@ -179,93 +219,92 @@ procedure inputLetter
 	end if
 	guessed (letterPosition) := pressedLetter
 	Font.Draw (pressedLetter, 22 + letterPosition * 25, 300, fontLetter, black)
+	% When player fill the line, and the word is wrong
 	if letterPosition = length (word) and (not correctWord) then
 	    enableBtnLetters (false)
-	    delay (1000)
+	    delay (1500)
 	    guessCount += 1
 	    startGuess
 	end if
     end if
-    if correctWord then
-	delay (500)
-	View.Set ("offscreenonly")
-	countRight += 1
-	colorback (green)
-	cls
-	G.textVerticalCentre ("You got it right!", 280, fontSans24, yellow)
-	G.textVerticalCentre (word, 222, fontSans36, white)
-	Anim.Uncover (Anim.TOP, 2, 5)
-	delay (2000)
-	Anim.Cover (white, Anim.BOTTOM, 2, 5)
-	View.Set ("nooffscreenonly")
-    elsif guessCount >= 10 then
-	countWrong += 1
-    else
-	return
+    if correctWord or guessCount >= 10 then
+	outputResult
     end if
-    showScore
-    visibleBtnLetters (false)
-    genWord
 end inputLetter
 
+% Draw a group of 26 buttons of each letter
+% Prevent repetitive GUI.CreateButton codes
+% Parameters:
+% xtl, ytl : coordinates of the top left corner of the group
+% width : width of each button
+% gap : horizontal gap between each button
+% column : number of buttons in a row
 procedure initBtnLetters (
 	xtl : int, ytl : int,
 	width : int, gap : int, column : int
 	)
-    % Draw a group of 26 buttons of each letter
-    % Prevent repetitive GUI.CreateButton codes
-    % Parameters:
-    % xtl, ytl : coordinates of the top left corner of the group
-    % width : width of each button
-    % gap : horizontal gap between each button
-    % column : number of buttons in a row
     for i : 0 .. 25
-	btnLetters (i) := GUI.CreateButton (
+	btnLetters (i) := GUI.CreateButtonFull (
 	    xtl + i mod column * (width + 10),
 	    ytl - i div column * width,
 	    width,
 	    chr (i + 65),
-	    inputLetter
+	    inputLetter,
+	    0,
+	    chr (i + 97),
+	    false
 	    )
     end for
     visibleBtnLetters (false)
 end initBtnLetters
 
+% Called when "Guess a letter" button is clicked
+% Set guess mode to single letter
 procedure guessLetter
     guessMode := "letter"
     startGuess
     visibleBtnLetters (true)
 end guessLetter
 
+% Called when "Guess the word" button is clicked
+% Set guess mode to the whole word
 procedure guessTheWord
     guessMode := "word"
     startGuess
     visibleBtnLetters (true)
 end guessTheWord
 
+% Called when "Give up - New game" button is clicked
+% Start a new game(player)
 procedure newGame
     var inputChar : char
     View.Set ("offscreenonly,nocursor")
+    % Record highest score
+    if player.right - player.wrong > highestPlayer.right - highestPlayer.wrong then
+	highestPlayer := player
+    end if
     % Simulate a curtain closing
     Anim.Cover (cyan, Anim.LEFT + Anim.RIGHT, 5, 15)
     delay (100)
     % Get player name
-    G.textVerticalCentre ("Enter your name", 300, fontSans24, white)
-    G.textVerticalCentre ("Once you are done, hit ENTER", 270, fontSans16, grey)
+    G.TextVerticalCentre ("Enter your name", 300, fontSans24, white)
+    G.TextVerticalCentre ("Once you are done, hit ENTER", 270, fontSans16, grey)
+    G.TextVerticalCentre ("Make sure your CapsLock is off during the game", 20, fontSans12, yellow)
     drawfillbox (220, 210, 580, 212, grey)
     View.Update
-    playerName := ""
+    player.name := ""
+    % Simulate a "get", with input always at the vertical centre
     loop
 	locate (1, 1)
 	Input.Flush
 	inputChar := getchar
-	if inputChar = KEY_BACKSPACE and length (playerName) > 0 then
-	    playerName := playerName (1 .. * -1)
+	if inputChar = KEY_BACKSPACE and length (player.name) > 0 then
+	    player.name := player.name (1 .. * -1)
 	    drawfillbox (0, 0, maxx, 209, cyan)
-	elsif inputChar not= KEY_BACKSPACE and inputChar not= KEY_ENTER and length (playerName) < 16 then
-	    playerName += inputChar
+	elsif inputChar not= KEY_BACKSPACE and inputChar not= KEY_ENTER and length (player.name) < 16 then
+	    player.name += inputChar
 	    drawfillbox (0, 0, maxx, 209, cyan)
-	elsif inputChar = KEY_ENTER and length (playerName) > 0 and playerName (1) not= " " and playerName (*) not= " " then
+	elsif inputChar = KEY_ENTER and length (player.name) > 0 and player.name (1) not= " " and player.name (*) not= " " then
 	    exit
 	else
 	    drawfillbox (220, 210, 580, 212, yellow)
@@ -273,15 +312,15 @@ procedure newGame
 	    delay (200)
 	    drawfillbox (220, 210, 580, 212, grey)
 	    drawfillbox (0, 0, maxx, 209, cyan)
-	    G.textVerticalCentre ("You should not start or end your name with a space.", 160, G.F ("sans serif", 12), yellow)
-	    G.textVerticalCentre ("Your name should be 1 - 16 characters.", 180, G.F ("sans serif", 12), yellow)
+	    G.TextVerticalCentre ("You should not start or end your name with a space.", 160, fontSans12, yellow)
+	    G.TextVerticalCentre ("Your name should be 1 - 16 characters.", 180, fontSans12, yellow)
 	end if
 	drawfillbox (0, 213, maxx, 260, cyan)
-	G.textVerticalCentre (playerName, 220, G.F ("mono", 28), white)
+	G.TextVerticalCentre (player.name, 220, fontMono28, white)
 	View.Update
     end loop
-    countRight := 0
-    countWrong := 0
+    player.right := 0
+    player.wrong := 0
     % Simulate a curtain opening
     delay (500)
     colorback (white)
@@ -297,20 +336,47 @@ procedure newGame
     genWord
 end newGame
 
+% Called when "Exit game" button is clicked
+% Graphics when the player exit the game
 procedure exitGame
+    % Record highest score
+    if player.right - player.wrong > highestPlayer.right - highestPlayer.wrong then
+	highestPlayer := player
+    end if
     View.Set ("offscreenonly")
-    colorback (darkgrey)
-    cls
-    G.textVerticalCentre ("Thanks for playing!", 220, G.F ("sans serif", 40), white)
+    drawfillbox (0, 0, maxx, maxy, darkgrey)
+    G.TextVerticalCentre ("Thanks for playing!", 260, fontSans40, white)
+    % Show the highest score and player name
+    G.TextVerticalCentre ("Highest score", 180, fontSans16, white)
+    G.TextVerticalCentre (highestPlayer.name, 140, fontSans24, yellow)
+    G.TextVerticalCentre ("Right: " + intstr (highestPlayer.right), 80, fontSans12, white)
+    G.TextVerticalCentre ("Wrong: " + intstr (highestPlayer.wrong), 60, fontSans12, white)
+    G.TextVerticalCentre ("Score: " + intstr (highestPlayer.right - highestPlayer.wrong), 110, fontSans16, yellow)
     Anim.Uncover (Anim.LEFT + Anim.RIGHT, 5, 15)
     GUI.Quit
 end exitGame
 
-View.Set ("graphics:800;480")
+% Show the graphical opening screen
+procedure openingScreen
+    View.Set ("offscreenonly")
+    Pic.Draw (picTitle, 0, 0, picCopy)
+    Anim.Uncover (Anim.LEFT + Anim.RIGHT, 2, 5)
+    % Blinking start hint
+    loop
+	G.TextVerticalCentre ("Click anywhere to start", 100, fontSans16, black)
+	Anim.UncoverArea (250, 95, 550, 120, Anim.BOTTOM, 1, 20)
+	exit when Mouse.ButtonMoved ("down")
+	delay (500)
+	drawfillbox (250, 90, 550, 120, white)
+	Anim.UncoverArea (250, 95, 550, 120, Anim.BOTTOM, 1, 20)
+	exit when Mouse.ButtonMoved ("down")
+    end loop
+end openingScreen
+
+View.Set ("graphics:800;480,offscreenonly")
 
 
 % Initialize graphics
-View.Set ("offscreenonly")
 picHang := Pic.Scale (Pic.FileNew ("hang.gif"), 360, 360)
 for i : 1 .. upper (picMan)
     picMan (i) := Pic.Scale (Pic.FileNew ("man" + intstr (i) + ".gif"), 116, 210)
@@ -318,7 +384,7 @@ end for
 picTitle := Pic.FileNew ("title.gif")
 initBtnLetters (50, 200, 40, 10, 6)
 btnGuessLetter := GUI.CreateButton (0, 0, 200, "Guess a letter", guessLetter)
-btnGuessWord := GUI.CreateButton (200, 0, 200, "Guess a word", guessTheWord)
+btnGuessWord := GUI.CreateButton (200, 0, 200, "Guess the word", guessTheWord)
 btnNewGame := GUI.CreateButton (400, 0, 200, "Give up - New game", newGame)
 btnExit := GUI.CreateButton (600, 0, 200, "Exit game", exitGame)
 GUI.Hide (btnGuessLetter)
@@ -327,21 +393,8 @@ GUI.Hide (btnNewGame)
 GUI.Hide (btnExit)
 
 % Show opening screen
-View.Set ("offscreenonly")
-Pic.Draw (picTitle, 0, 0, picCopy)
-Anim.Uncover (Anim.LEFT + Anim.RIGHT, 2, 5)
-% Blinking start hint
-loop
-    G.textVerticalCentre ("Click anywhere to start", 100, fontSans16, black)
-    Anim.UncoverArea (250, 95, 550, 120, Anim.BOTTOM, 1, 20)
-    exit when Mouse.ButtonMoved ("down")
-    delay (500)
-    drawfillbox (250, 90, 550, 120, white)
-    Anim.UncoverArea (250, 95, 550, 120, Anim.BOTTOM, 1, 20)
-    exit when Mouse.ButtonMoved ("down")
-end loop
-
-% Start a new game 
+openingScreen
+% Start a new game
 newGame
 
 loop
